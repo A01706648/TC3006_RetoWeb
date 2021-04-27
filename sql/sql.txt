@@ -1,0 +1,128 @@
+DROP DATABASE IF EXISTS `NATGAS_HU`;
+CREATE DATABASE `NATGAS_HU`; 
+USE `NATGAS_HU`;
+
+SET NAMES utf8 ;
+SET character_set_client = utf8mb4 ;
+
+CREATE TABLE function(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    PRIMARY KEY(id));
+CREATE TABLE role (
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    PRIMARY KEY(id));
+CREATE TABLE function_assignment(
+    function_id INT NOT NULL,
+    role_id INT NOT NULL,
+    PRIMARY KEY(function_id, role_id),
+    FOREIGN KEY(function_id) REFERENCES function(id),
+    FOREIGN KEY(role_id) REFERENCES role(id));
+CREATE TABLE cost(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    cost INT,    
+    PRIMARY KEY(id));
+CREATE TABLE user(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    password VARCHAR(128),
+    cost INT,
+    role_id INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(cost) REFERENCES cost(id),
+    FOREIGN KEY(role_id) REFERENCES role(id));
+CREATE TABLE work_state(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),    
+    PRIMARY KEY(id));
+CREATE TABLE test_state(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    PRIMARY KEY(id));
+CREATE TABLE stakeholder(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    PRIMARY KEY(id));
+CREATE TABLE phase(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(64),
+    PRIMARY KEY(id));
+CREATE TABLE task_type(
+    id INT AUTO_INCREMENT NOT NULL,
+    phase_id INT,
+    name VARCHAR(64),
+    PRIMARY KEY(id),
+    FOREIGN KEY(phase_id) REFERENCES phase(id));
+CREATE TABLE project(
+    id INT AUTO_INCREMENT NOT NULL,
+    name VARCHAR(256),
+    create_date DATE,
+    est_date DATE,
+    description VARCHAR(1024),
+    state INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(state) REFERENCES work_state(id));
+CREATE TABLE story(
+    id INT AUTO_INCREMENT NOT NULL,
+    project_id INT,
+    user_id INT,
+    create_date DATE,
+    est_date DATE,
+    stakeholder INT,
+    name VARCHAR(256),
+    description VARCHAR(1024),
+    purpose VARCHAR(1024),
+    comment VARCHAR(1024),
+    ap INT,
+    state INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(project_id) REFERENCES project(id),
+    FOREIGN KEY(stakeholder) REFERENCES stakeholder(id),
+    FOREIGN KEY(user_id) REFERENCES user(id),
+    FOREIGN KEY(state) REFERENCES work_state(id));
+CREATE TABLE task(
+    id INT AUTO_INCREMENT NOT NULL,
+    story_id INT,
+    user_id INT,
+    create_date DATE,
+    stakeholder INT,
+    name VARCHAR(256),
+    est_hour INT,
+    real_hour INT,
+    est_date DATE,
+    real_date DATE,
+    description VARCHAR(1024),
+    purpose VARCHAR(1024),
+    comment VARCHAR(1024),
+    state INT,
+    type INT,
+    PRIMARY KEY(id),
+    FOREIGN KEY(story_id) REFERENCES story(id),
+    FOREIGN KEY(stakeholder) REFERENCES stakeholder(id),
+    FOREIGN KEY(type) REFERENCES task_type(id),
+    FOREIGN KEY(user_id) REFERENCES user(id),
+    FOREIGN KEY(state) REFERENCES work_state(id));
+CREATE TABLE test(
+    id INT AUTO_INCREMENT NOT NULL,
+    story_id INT,
+    user_id INT,
+    create_date DATE,
+    name VARCHAR(256),
+    description  VARCHAR(1024),
+    expect  VARCHAR(1024),
+    comment  VARCHAR(1024),
+    state INT,    
+    PRIMARY KEY(id),
+    FOREIGN KEY(story_id) REFERENCES story(id),
+    FOREIGN KEY(user_id) REFERENCES user(id),
+    FOREIGN KEY(state) REFERENCES test_state(id));
+CREATE TABLE project_assignment(
+    project_id INT NOT NULL,
+    user_id INT NOT NULL,
+    hour INT,
+    PRIMARY KEY(project_id,user_id),
+    FOREIGN KEY(project_id) REFERENCES project(id),
+    FOREIGN KEY(user_id) REFERENCES user(id)); 
+    

@@ -1,0 +1,16 @@
+<%- include('includes/head.ejs') %>
+
+<main class="container">
+    <form action="/user/new" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+        <label for="name">Real Name</label> <input type="text" name="name" required>          
+        <label for="id">User Name</label> <input type="text" name="id" required>
+        <label for="password">Password</label> <input type="password" name="password" required>
+        <input type="submit" value="Save">
+    </form>
+</main>
+
+<%- include('includes/tail.ejs') %>
+<script src="/js/register.js"></script> 
+<%- include('includes/end.ejs') %>
+

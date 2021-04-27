@@ -1,0 +1,184 @@
+<%- include('includes/head.ejs') %>  
+
+    <div id="div_story_info">
+        <div class="col s12">
+            <div class="row">
+                <% if(story.id) { %>
+                    <h1>Story <%= story.id %></h1>
+                <% }else{ %>
+                    <h1>New Story</h1>
+                <% } %>
+            </div>  
+            <div class="row">
+                <h2><%= story.name %></h2>
+            </div>
+            <div class="row">
+                <a href=<%= `../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="div_control">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s6">
+                    <form action=<%= `/task/new/?id=${story.id}` %> method="GET">
+                        <button class="btn waves-effect waves-light" type="submit" id="NewStoryBtn">New Task
+                            <i class="material-icons right">create_new_folder</i>
+                        </button>   
+                    </form>
+                </div>
+                <div class="col s6">
+                    <form action=<%= `/test/new/?id=${story.id}` %> method="GET">
+                        <button class="btn waves-effect waves-light" type="submit" id="NewStoryBtn">New Test
+                            <i class="material-icons right">create_new_folder</i>
+                        </button>   
+                    </form>        
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="div_story_tab">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a href="#div_story_detail">Detail</a></li>
+                <li class="tab col s3"><a href="#div_task_list">Task List</a></li>
+                <li class="tab col s3"><a href="#div_test_list">Test List</a></li>
+            </ul>
+        </div>
+   
+        <div id="div_story_detail" class="col s12">
+            <div class="row">
+                <form class="col s12" id="form_story_detail" action="\story\submit" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="id" name="id" type="hidden" class="validate" value=<%= story.id %>>
+                            <!--label for="id">ID</label-->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="project_id" name="project_id" type="hidden" class="validate" value=<%= project.id %>>
+                            <!--label for="id">Project ID</label-->
+                        </div>
+                    </div>                                         
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="state" id="state" value=<%= story.state %>>
+                                <% for(key of Object.keys(state)){ %>                                
+                                    <option value=<%= state[key] %> 
+                                        <% if(story.state == state[key]){ %> selected <% } %>><%= key %></option>
+                                <%}%>
+                            </select>
+                            <label>State</label>                            
+                        </div>
+                    </div>          
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="stakeholder" id="stakeholder" value=<%= story.stakeholder %>>
+                                <% for(key of Object.keys(stakeholder)){ %>                                
+                                    <option value=<%= stakeholder[key] %> 
+                                        <% if(story.stakeholder == stakeholder[key]){ %> selected <% } %>><%= key %></option>
+                                <%}%>
+                            </select>
+                            <label>stakeholder</label>                            
+                        </div>
+                    </div>                               
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name" name="name" type="text" class="validate" value=<%= story.name %>>
+                            <label for="name">name</label>
+                            <span class="helper-text red-text" id="name_helper"></span>
+                        </div>
+                    </div>     
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="ap" name="ap" type="number" class="validate" value=<%= story.ap %>>
+                            <label for="ap">ap</label>
+                        </div>
+                    </div>     
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="description" name="description" type="text" class="validate" value=<%= story.description %>>
+                            <label for="description">description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="purpose" name="purpose" type="text" class="validate" value=<%= story.purpose %>>
+                            <label for="purpose">purpose</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="comment" name="comment" type="text" class="validate" value=<%= story.comment %>>
+                            <label for="comment">comment</label>
+                        </div>
+                    </div>
+
+                    <button class="btn waves-effect waves-light" type="button" name="SaveBtn" onclick="SaveBtnHandler();">Save
+                        <i class="material-icons right">send</i>
+                    </button>                            
+                </form>
+                
+            </div>
+        </div><!--End of Detail Div-->
+
+        <div id="div_task_list" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Task Name</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for (let task of task_list) { %>
+                        <tr>
+                            <td> <%= task.id %> </td>
+                            <td> <%= task.name %> </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div><!--End of Task Div-->
+
+        <div id="div_test_list" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Test ID</th>
+                        <th>Test Name</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for (let test of test_list) { %>
+                        <tr>
+                            <td> <%= test.id %> </td>
+                            <td> <%= test.name %> </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div><!--End of User Div--> 
+    
+    </div><!--End of Tab div--> 
+    
+
+    <div id="div_control">
+
+    </div>
+
+
+
+    <%- include('includes/tail.ejs') %>
+    <script src="/js/story.js"></script> 
+    <%- include('includes/end.ejs') %>

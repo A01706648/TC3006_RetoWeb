@@ -1,0 +1,129 @@
+<%- include('includes/head.ejs') %>   
+    <div id="div_project_info">
+        <div class="col s12">
+            <div class="row">
+                <% if(project.id) { %>
+                    <h1>Project <%= project.id %></h1>
+                <% }else{ %>
+                    <h1>New Project</h1>
+                <% } %>
+            </div>  
+            <div class="row">
+                <h2><%= project.name %></h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="div_control">
+        <a class="btn waves-effect waves-light" href=<%= `/story/new/?id=${project.id}` %>><i class="material-icons right">create_new_folder</i>New Story</a>
+        <!--form action=<%= `/story/new/?id=${project.id}` %> method="GET">
+            <button class="btn waves-effect waves-light" type="submit" id="NewStoryBtn">New Story
+                <i class="material-icons right">create_new_folder</i>
+            </button>   
+        </form-->
+    </div>    
+
+    <div id="div_project_tab">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a href="#div_project_detail">Detail</a></li>
+                <li class="tab col s3"><a href="#div_story_list">Story List</a></li>
+                <li class="tab col s3"><a href="#div_user_list">User List</a></li>
+            </ul>
+        </div>
+   
+        <div id="div_project_detail" class="col s12">
+            <div class="row">
+                <form class="col s12" id="form_project_detail" action="\project\submit" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="id" name="id" type="hidden" class="validate" value=<%= project.id %>>
+                            <!--label for="id">ID</label-->
+                        </div>
+                    </div>                     
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="state" id="state" value=<%= project.state %>>
+                                <% for(key of Object.keys(state)){ %>                                
+                                    <option value=<%= state[key] %> 
+                                        <% if(project.state == state[key]){ %> selected <% } %>><%= key %></option>
+                                <%}%>
+                            </select>
+                            <label>State</label>                            
+                        </div>
+                    </div>                    
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name" name="name" type="text" class="validate" value=<%= project.name %>>
+                            <label for="name">name</label>
+                            <span class="helper-text red-text" id="name_helper"></span>
+                        </div>
+                    </div>     
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="description" name="description" type="text" class="validate" value=<%= project.description %>>
+                            <label for="description">description</label>
+                        </div>
+                    </div>
+
+                    <button class="btn waves-effect waves-light" type="button" name="SaveBtn" onclick="SaveBtnHandler();">Save
+                        <i class="material-icons right">send</i>
+                    </button>                            
+                </form>
+                
+            </div>
+        </div><!--End of Detail Div-->
+
+        <div id="div_story_list" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Story ID</th>
+                        <th>Story Name</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for (let story of story_list) { %>
+                        <tr>
+                            <td><a href=<%= `/story/?id=${story.id}` %>><%= story.id %></a></td>
+                            <td> <%= story.name %> </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div><!--End of story Div-->
+
+        <div id="div_user_list" class="col s12">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <% for (let user of user_list) { %>
+                        <tr>
+                            <td> <%= user.id %> </td>
+                            <td> <%= user.name %> </td>
+                        </tr>
+                    <% } %>                    
+                </tbody>
+            </table>
+        </div><!--End of User Div--> 
+    
+    </div><!--End of Tab div--> 
+    
+
+    <div id="div_control">
+
+    </div>
+
+
+
+    <%- include('includes/tail.ejs') %>
+    <script type="text/javascript" src="/js/project.js"></script> 
+    <%- include('includes/end.ejs') %>

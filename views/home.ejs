@@ -1,0 +1,35 @@
+<%- include('includes/head.ejs') %>   
+   
+    <div id="div_control">
+        <form action="/project/new" method="GET">
+            <button class="btn waves-effect waves-light" type="submit" id="NewProjectBtn">New Project
+                <i class="material-icons right">create_new_folder</i>
+            </button>   
+        </form>
+    </div>
+
+    <div id="div_project_list">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>Project Name</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% for (let project of project_list) { %>
+                <tr>
+                    <td><a href=<%= `../project/?id=${project.id}` %> > <%= project.id %> </a></td>
+                    <td> <%= project.name %> </td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+
+
+    <%- include('includes/tail.ejs') %>
+    <script src="/js/home.js"></script> 
+    <%- include('includes/end.ejs') %>
