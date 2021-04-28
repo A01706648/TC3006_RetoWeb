@@ -24,10 +24,10 @@ phase{id, name}
 task_type{id, phase_id, name}
     PK(id),
     FK(phase_id) REFERENCES phase(id);
-project{id, name, create_date, description, state}
+project{id, name, create_date, est_date, description, state}
     PK(id),
     FK(state) REFERENCES work_state(id);
-story{id, project_id, user_id, stakeholder, name, create_date, description, purpose, comment, ap, state}
+story{id, project_id, user_id, stakeholder, name, create_date, est_date, description, purpose, comment, ap, state}
     PK(id),
     FK(project_id) REFERENCES project(id),
     FK(stakeholder) REFERENCES stakeholder(id),

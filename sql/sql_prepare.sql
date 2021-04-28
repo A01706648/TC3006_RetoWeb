@@ -126,7 +126,15 @@ CREATE TABLE project_assignment(
     PRIMARY KEY(project_id,user_id),
     FOREIGN KEY(project_id) REFERENCES project(id),
     FOREIGN KEY(user_id) REFERENCES user(id)); 
-    
+CREATE TABLE file(
+    id INT AUTO_INCREMENT NOT NULL,
+    project_id INT,
+    name VARCHAR(256),
+    description VARCHAR(1024),
+    location VARCHAR(1024),
+    PRIMARY KEY(id),
+    FOREIGN KEY(project_id) REFERENCES project(id)
+);    
 
 INSERT INTO phase (id, name)    
 VALUES
@@ -195,7 +203,7 @@ VALUES
 INSERT INTO function (id, name)
 VALUES 
 ('0', 'null'),
-('1', 'write');
+('1', 'create user');
 
 
 INSERT INTO function_assignment (function_id, role_id)
