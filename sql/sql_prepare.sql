@@ -219,3 +219,7 @@ VALUES
 ('2', 'mid', '7500'),
 ('3', 'senior', '10000');
 
+INSERT INTO user(id, name, cost)
+VALUES
+('null', 'Not Assigned', 0);
+

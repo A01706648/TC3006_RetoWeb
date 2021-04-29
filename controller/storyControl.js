@@ -5,22 +5,30 @@ const storyAssignModel = require('../model/storyAssignModel.js');
 const storyModel = require('../model/storyModel.js');
 const optionModel = require('../model/optionModel.js');
 const projectModel = require('../model/projectModel.js');
+const userModel = require('../model/userModel.js');
+const assignModel = require('../model/storyAssignModel.js');
 const url = require('url');
 
 
-exports.get = (request, response, next) => {
+exports.get = async (request, response, next) => {
     console.log('get story');
 
     const queryObj = url.parse(request.url, true).query;
     console.log(queryObj);
     let story_id = queryObj.id;
 
-    let story = storyModel.getById(story_id);
+    let story = await storyModel.getById(story_id);
     let project;
+    let task_list = [];
+    let test_list = [];
+    let user_list;
     if(story)
     {
-        story = new storyModel(rows[0])
-        project = projectModel.getById(story.project_id);
+        project = await projectModel.getById(story.project_id);
+        task_list = await taskModel.getByStory(story.id);
+        test_list = await testModel.getByStory(story.id);
+        user_list = await userModel.getByProject(story.project_id);
+        //user_list.push({id:"null", name:'unsigned'});
         if(!project)
         {
             console.log('Can not get Project');
@@ -40,21 +48,28 @@ exports.get = (request, response, next) => {
                                 csrfToken:request.csrfToken(),
                                 story: story,
                                 project: project,
-                                task_list: taskModel.getByStory(story.id),
-                                test_list: testModel.getByStory(story.id),
+                                task_list: task_list,
+                                test_list: test_list,
+                                user_list: user_list,
                                 state: optionModel.work_state,
                                 stakeholder: optionModel.stakeholder});
 }
 
-exports.new = (request, response, next) => {
+exports.new = async (request, response, next) => {
     console.log('new story');
 
     const queryObj = url.parse(request.url, true).query;
     console.log(queryObj);
 
     let project_id = queryObj.id;//req.query.id;
-    let story = storyModel.getEmpty();
-    let project = projectModel.getById(project_id);
+    let story = await storyModel.getEmpty();
+    story.user_id = 'null';
+    story.project_id = project_id;
+    let project = await projectModel.getById(project_id);
+    let user_list = await userModel.getByProject(project_id);
+    //user_list.push({id:"null", name:'unsigned'});
+    let task_list = [];
+    let test_list = []; 
 
     if(!project)
     {
@@ -66,19 +81,23 @@ exports.new = (request, response, next) => {
                                 csrfToken:request.csrfToken(),
                                 story: story,
                                 project: project,
-                                task_list: taskModel.getByStory(story.id),
-                                test_list: testModel.getByStory(story.id),
+                                task_list: task_list,
+                                test_list: test_list,
+                                user_list: user_list,
                                 state: optionModel.work_state,
                                 stakeholder: optionModel.stakeholder});
 }
 
-exports.post = (request, response, next) => {
+exports.post = async (request, response, next) => {
     /*update story*/
     console.log("Set Story");
     console.log(request.body);
 
     let story = new storyModel(request.body);
-    let id = story.save();
+    let id = await story.save();
+    let assign = assignModel.getEmpty();
+    assign.project_id = id;
+    await assign.save();//add NOT Assigned to the project
     
     console.log(`id is ${id}`);
 

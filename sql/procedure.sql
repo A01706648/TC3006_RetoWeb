@@ -10,6 +10,7 @@ DROP PROCEDURE IF EXISTS `saveProjectAssignment`;
 DROP PROCEDURE IF EXISTS `deleteProjectAssignment`;
 DROP PROCEDURE IF EXISTS `saveFile`;
 DROP PROCEDURE IF EXISTS `deleteFile`;
+DROP PROCEDURE IF EXISTS `newUser`;
 
 DELIMITER $$
 CREATE PROCEDURE existProject(IN id INT, OUT exist INT)
@@ -203,6 +204,31 @@ BEGIN
         INSERT INTO user(id,  name, password, cost, role_id) 
         VALUES (id,  name, password, cost, role_id);
     END IF;
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE PROCEDURE newUser( IN id VARCHAR(64),
+                            IN name VARCHAR(64),
+                            IN password VARCHAR(128),
+                            IN cost INT, 
+                            IN role_id INT)
+BEGIN
+    DECLARE exist_user INT DEFAULT 0;
+    DECLARE saved_id VARCHAR(64) DEFAULT '';
+
+    SELECT COUNT(*) INTO exist_user FROM user WHERE user.id=id;
+
+    SET saved_id=id;
+
+    IF exist_user > 0 THEN
+        SET saved_id=null;
+    ELSE
+        INSERT INTO user(id,  name, password, cost, role_id) 
+        VALUES (id,  name, password, cost, role_id);
+    END IF;
+
+    SELECT saved_id as id;
 END $$
 DELIMITER ;
 

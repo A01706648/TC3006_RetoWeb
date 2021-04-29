@@ -3,8 +3,6 @@ const bcrypt = require('bcryptjs');
 
 class UserClass
 {
-    static user_list = [];
-
     constructor(user_obj)
     {
         this.id = user_obj.id;
@@ -14,57 +12,7 @@ class UserClass
         this.role_id = user_obj.role_id;
     }
 
-    static create(id
-                , name
-                , costcenter = 0
-                , psw = '')
-    {
-        user = new UserClass(id
-                            , name
-                            , costcenter
-                            , psw);
-        this.user_list.push(user);
-
-        return user;
-    }
-
-    static getCopyById(id)
-    {
-        returnUser = null;
-
-        for(user of this.user_list)
-        {
-            if(user.id == id)
-            {
-                returnUser = user;
-                break;
-            }
-        }
-
-        return returnUser;
-    }
-
-    static getByName(name)
-    {
-        returnUserList = [];
-
-        for(user of this.user_list)
-        {
-            if(user.name.includes(name))
-            {
-                returnUserList.push(user);
-            }
-        }
-
-        return returnUserList
-    }
-
-    static getList()
-    {
-        return this.user_list;
-    }
-
-    save() {
+    save_old() {
 
         return bcrypt.hash(this.password, 12)
             .then((password_encripted) => {
@@ -76,9 +24,112 @@ class UserClass
             .catch(err => console.log(err));  
     }
 
+    dbsave()
+    {
+        return bcrypt.hash(this.password, 12)
+            .then((password_encripted) => {
+                console.log("save user");
+                return db.execute("CALL saveUser(?, ?, ? ,? ,?)", [this.id, this.name, password_encripted, this.cost, this.role_id]);
+            })
+            .catch(err => console.log(err));  
+    }
+
+    dbsaveNew()
+    {
+        return bcrypt.hash(this.password, 12)
+            .then((password_encripted) => {
+                console.log("new user");
+                return db.execute("CALL newUser(?, ?, ? ,? ,?)", [this.id, this.name, password_encripted, this.cost, this.role_id]);
+            })
+            .catch(err => console.log(err));  
+    }    
+
+    save()
+    {
+        return this.dbsave()
+        .then(([rows, fieldData]) => {
+            //console.log(Object.keys(rows[0][0]));
+            //let id = rows[0][0].id;
+            return this.id;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    saveNew()
+    {
+        return this.dbsave()
+        .then(([rows, fieldData]) => {
+            console.log(Object.keys(rows[0][0]));
+            let id = rows[0][0].id;
+            return this.id;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    static getByid(id)
+    {
+        return this.fetchOneById(id)
+        .then(([rows, fieldData]) => {
+            if(rows.length == 0)
+            {
+                console.log(`user ${id} not found, go to new project`);
+            }
+            else
+            {//get the story obj
+                console.log('Got user');
+                //console.log(rows[0]);
+                let user_obj = new UserClass(rows[0]);
+                return user_obj;
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    static getByProject(project_id)
+    {
+        return this.fetchAllByProject(project_id)
+        .then(([rows, fieldData]) => {
+            let user_list = [...rows];
+            return user_list;
+        })
+        .catch(err => {
+            console.log(err);
+        }); 
+    }
+
+    static getAll()
+    {
+        return this.fetchAll()
+        .then(([rows, fieldData]) => {
+            let user_list = [...rows];
+            return user_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
     static fetchOneById(id) 
     {
         return db.execute('SELECT * FROM user WHERE id=?', [id]);
+    }    
+
+    static fetchAll()
+    {
+        return db.execute('SELECT * FROM user');
+    }
+
+    static fetchAllByProject(project_id)
+    {
+        return db.execute('SELECT * \
+        FROM user INNER JOIN project_assignment ON user.id=project_assignment.user_id \
+        WHERE project_assignment.project_id=?;', [project_id]);
     }    
 
     static getPrevilige(id)

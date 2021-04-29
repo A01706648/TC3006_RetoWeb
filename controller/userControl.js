@@ -98,7 +98,7 @@ exports.getNew = (request, response, next) => {
 
 exports.postNew = (request, response, next) => {
     const new_user = new userModel(request.body);
-    new_user.save()
+    new_user.save_old()
         .then(() => {
             request.session.isLoggedIn = true;
             request.session.id = request.body.id;

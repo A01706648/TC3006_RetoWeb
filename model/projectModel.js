@@ -32,7 +32,7 @@ class ProjectClass
 
     save()
     {
-        this.dbsave()
+        return this.dbsave()
         .then(([rows, fieldData]) => {
             //console.log(Object.keys(rows[0][0]));
             let id = rows[0][0].id;
@@ -45,7 +45,7 @@ class ProjectClass
 
     static getById(id)
     {
-        this.fetchOneById(id)
+        return this.fetchOneById(id)
         .then(([rows, fieldData]) => {
             if(rows.length == 0)
             {
@@ -54,8 +54,8 @@ class ProjectClass
             else
             {//get the project obj
                 console.log('Got Project');
-                //console.log(rows[0]);
-                project_obj = new ProjectClass(rows[0]);
+                //console.log(rows[0].id);
+                let project_obj = new ProjectClass(rows[0]);
                 return project_obj;
             }
         })
@@ -66,19 +66,20 @@ class ProjectClass
 
     static getAll()
     {
-        this.fetchAll()
-        .then(([rows, fieldData]) => {
-            let project_list = [...rows];
-            return project_list;
-        })
-        .catch(err => {
-            console.log(err);
-        });    
+        return this.fetchAll()
+            .then(([rows, fieldData]) => {
+                console.log(rows);
+                let project_list = [...rows];
+                return project_list;
+            })
+            .catch(err => {
+                console.log(err);
+            });    
     }
 
     static getByUser(user_id)
     {
-        this.fetchAllByUser(user_id)
+        return this.fetchAllByUser(user_id)
         .then(([rows, fieldData]) => {
             let project_list = [...rows];
             return project_list;

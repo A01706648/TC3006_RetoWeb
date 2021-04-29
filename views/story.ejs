@@ -54,7 +54,7 @@
    
         <div id="div_story_detail" class="col s12">
             <div class="row">
-                <form class="col s12" id="form_story_detail" action="\story\submit" method="POST">
+                <form class="col s12" id="form_story_detail" action="\story\" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
                     <input type="hidden" name="create_date" value="<%= story.create_date %>">
                     <input type="hidden" name="project_id" value="<%= story.project_id %>">
@@ -93,9 +93,20 @@
                             <input id="ap" name="ap" type="number" class="validate" value=<%= story.ap %>>
                             <label for="ap">ap</label>
                         </div>
-                    </div>                              
+                    </div>
                     <div class="row">
-                        <div class="input-field col s2">
+                        <div class="input-field col s12">
+                            <select name="user_id" id="user_id" value=<%= story.user_id %>>
+                                <% for(user of user_list){ %>                                
+                                    <option value=<%= user.id %>
+                                        <% if(story.user_id == user.id){ %> selected <% } %>><%= user.name %></option>
+                                <%}%>
+                            </select>
+                            <label>Assigned User</label>                            
+                        </div>
+                    </div>                                                  
+                    <div class="row">
+                        <div class="input-field col s3">
                             <input id="est_date" name="est_date" type="text" class="datepicker" value="<%= story.est_date %>">
                             <label for="est_date">Estimated Finish Date</label>
                         </div>
@@ -141,7 +152,7 @@
                 <tbody>
                     <% for (let task of task_list) { %>
                         <tr>
-                            <td> <%= task.id %> </td>
+                            <td><a href=<%= `/task/?id=${task.id}` %>> <%= task.id %> </a></td>
                             <td> <%= task.name %> </td>
                         </tr>
                     <% } %>
@@ -161,7 +172,7 @@
                 <tbody>
                     <% for (let test of test_list) { %>
                         <tr>
-                            <td> <%= test.id %> </td>
+                            <td><a href=<%= `/test/?id=${test.id}` %>> <%= test.id %> </a></td>
                             <td> <%= test.name %> </td>
                         </tr>
                     <% } %>

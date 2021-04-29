@@ -29,6 +29,8 @@ function UserObj(id, name)
 
 //router.get('/new', projectControl.new);
 router.get('/new', isAuth, projectControl.new);
+router.post('/assign', isAuth, projectControl.assign);
+router.get('/unassign', isAuth, projectControl.unassign);
 //router.post('/submit', projectControl.submit);
 router.post('/', isAuth, projectControl.post);
 //router.get('/', projectControl.get);

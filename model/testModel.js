@@ -1,102 +1,112 @@
-
+const db = require('../util/database')
 
 class TestClass
 {
-    static test_list = [];
-
-    constructor(id
-                , story_id
-                , name
-                , description
-                , expect
-                , comment
-                , est_hour
-                , real_hour
-                , est_date
-                , real_date
-                , type
-                , state)
+    constructor(test_obj)
     {
-        this.id = id;
-        this.story_id = story_id;
-        this.name = name;
-        this.description = description;
-        this.expect = expect;
-        this.comment = comment;
-        this.creatDate = Date.now();
-        this.est_hour = est_hour;
-        this.real_hour = real_hour;
-        this.est_date = est_date;
-        this.real_date = real_date;
-        this.type = type;
+        this.id = test_obj.id;
+        this.story_id = test_obj.story_id;
+        this.user_id = test_obj.user_id;
+        this.name = test_obj.name;
+        this.description = test_obj.description;
+        this.expect = test_obj.expect;
+        this.comment = test_obj.comment;
+        this.create_date = test_obj.create_date;
         this.state = state;
     }
 
-    static create(id
-                    , story_id
-                    , name
-                    , description = ''
-                    , expect = ''
-                    , comment
-                    , est_hour = undefined
-                    , real_hour = 0
-                    , est_date = undefined
-                    , real_date = undefined
-                    , type = 0
-                    , state = 0)
+    static getEmpty()
     {
-        let test = new TestClass(id
-                            , story_id
-                            , name
-                            , description
-                            , expect
-                            , comment
-                            , est_hour
-                            , real_hour
-                            , est_date
-                            , real_date
-                            , type
-                            , state);
-        this.test_list.push(test);
+        return    new TestClass({id:0
+                                ,story_id:null
+                                ,user_id:null
+                                ,create_date :new Date().toISOString().split('T')[0]
+                                ,name:''
+                                ,description:''
+                                ,expect :''
+                                ,comment:''
+                                , state:0});
+    }    
 
-        return test;
+    dbsave()
+    {
+        console.log("save test ");
+        return db.execute("CALL saveTest(?, ?, ?, ?, ?, ?, ?, ?, ?);"
+                        , [this.id, this.story, this.user_id, this.name, this.create_date, this.description, this.expect, this.comment, this.state]);        
     }
 
-    static getCopyById(id)
+    save()
     {
-        let returnTest = null;
+        return this.dbsave()
+        .then(([rows, fieldData]) => {
+            //console.log(Object.keys(rows[0][0]));
+            let id = rows[0][0].id;
+            return id;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
 
-        for(let test of this.test_list)
-        {
-            if(test.id == id)
+    static getById(id)
+    {
+        return this.fetchOneById(id)
+        .then(([rows, fieldData]) => {
+            if(rows.length == 0)
             {
-                returnTest = test;
-                break;
+                console.log(`test ${id} not found, go to new test`);
             }
-        }
-
-        return returnTest;
+            else
+            {//get the test obj
+                console.log('Got test');
+                //console.log(rows[0]);
+                let test_obj = new TestClass(rows[0]);
+                return test_obj;
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
     }
 
-    static getList()
+    static getAll()
     {
-        return this.test_list;
-    }
+        return this.fetchAll()
+        .then(([rows, fieldData]) => {
+            let test_list = [...rows];
+            return test_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }    
 
     static getByStory(story_id)
     {
-        let returnTestList = [];
-
-        for(let test in this.test_list)
-        {
-            if(test.story_id == story_id)
-            {
-                returnTestList.push(test);
-            }
-        }
-
-        return returnTestList;
+        return this.fetchAllByStory(story_id)
+        .then(([rows, fieldData]) => {
+            let test_list = [...rows];
+            return test_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });        
     }
+
+    static fetchOneById(id)
+    {
+        return db.execute('SELECT * FROM test WHERE id=?', [id]);
+    }
+
+    static fetchAll()
+    {
+        return db.execute('SELECT * FROM test');
+    }
+
+    static fetchAllByStory(story_id)
+    {
+        return db.execute('SELECT * FROM test WHERE story_id=?', [story_id]);
+    }    
 }
 
 module.exports = TestClass;

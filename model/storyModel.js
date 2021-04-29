@@ -13,7 +13,7 @@ class StoryClass
         this.comment = story_obj.comment;
         this.stakeholder = story_obj.stakeholder;
         this.ap = story_obj.ap;
-        this.creatDate = story_obj.create_date;
+        this.create_date = story_obj.create_date;
         this.est_date = story_obj.est_date;
         this.state = story_obj.state;
     }
@@ -43,7 +43,7 @@ class StoryClass
 
     save()
     {
-        this.dbsave()
+        return this.dbsave()
         .then(([rows, fieldData]) => {
             //console.log(Object.keys(rows[0][0]));
             let id = rows[0][0].id;
@@ -56,7 +56,7 @@ class StoryClass
 
     static getById(id)
     {
-        this.fetchOneById(id)
+        return this.fetchOneById(id)
         .then(([rows, fieldData]) => {
             if(rows.length == 0)
             {
@@ -66,7 +66,7 @@ class StoryClass
             {//get the story obj
                 console.log('Got story');
                 //console.log(rows[0]);
-                story_obj = new StoryClass(rows[0]);
+                let story_obj = new StoryClass(rows[0]);
                 return story_obj;
             }
         })
@@ -77,7 +77,7 @@ class StoryClass
 
     static getAll()
     {
-        this.fetchAll()
+        return this.fetchAll()
         .then(([rows, fieldData]) => {
             let story_list = [...rows];
             return story_list;
@@ -89,7 +89,7 @@ class StoryClass
 
     static getByProject(project_id)
     {
-        this.fetchAllByProject(project_id)
+        return this.fetchAllByProject(project_id)
         .then(([rows, fieldData]) => {
             let story_list = [...rows];
             return story_list;

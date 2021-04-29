@@ -1,9 +1,10 @@
 const projectModel = require('../model/projectModel.js');
 
-exports.get = (request, response, next) =>
+exports.get = async (request, response, next) =>
 {
     //console.log(projectModel.getList().length);
-    let project_list = projectModel.getAll();
+    const project_list = await projectModel.getAll();
+    console.log('home');
     console.log(project_list);
     response.render('home', {session:request.session,
                                 csrfToken:request.csrfToken(),
