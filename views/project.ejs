@@ -34,25 +34,10 @@
    
         <div id="div_project_detail" class="col s12">
             <div class="row">
-                <form class="col s12" id="form_project_detail" action="\project\submit" method="POST">
+                <form class="col s12" id="form_project_detail" action="\project\" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="id" name="id" type="hidden" class="validate" value=<%= project.id %>>
-                            <!--label for="id">ID</label-->
-                        </div>
-                    </div>                     
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <select name="state" id="state" value=<%= project.state %>>
-                                <% for(key of Object.keys(state)){ %>                                
-                                    <option value=<%= state[key] %> 
-                                        <% if(project.state == state[key]){ %> selected <% } %>><%= key %></option>
-                                <%}%>
-                            </select>
-                            <label>State</label>                            
-                        </div>
-                    </div>                    
+                    <input type="hidden" name="create_date" value="<%= project.create_date %>">
+                    <input id="id" name="id" type="hidden" class="validate" value=<%= project.id %>>
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="name" name="name" type="text" class="validate" value=<%= project.name %>>
@@ -60,6 +45,23 @@
                             <span class="helper-text red-text" id="name_helper"></span>
                         </div>
                     </div>     
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <select name="state" id="state" value=<%= project.state %>>
+                                <% for(option of state){ %>                                
+                                    <option value=<%= option.id %> 
+                                        <% if(project.state == option.id){ %> selected <% } %>><%= option.name %></option>
+                                <%}%>
+                            </select>
+                            <label>State</label>                            
+                        </div>
+                    </div>                      
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <input id="est_date" name="est_date" type="text" class="datepicker" value="<%= project.est_date %>">
+                            <label for="est_date">Estimated Finish Date</label>
+                        </div>
+                    </div>                         
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="description" name="description" type="text" class="validate" value=<%= project.description %>>

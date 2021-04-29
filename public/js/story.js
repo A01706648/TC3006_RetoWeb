@@ -1,6 +1,18 @@
 /*Material Initialization*/
 M.AutoInit();
 
+//Init DatePicker
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems, {format:'yyyy-mm-dd', autoClose:true});
+});
+
+// Or with jQuery
+
+$(document).ready(function(){
+$('.datepicker').datepicker();
+});
+
 function isEmptyOrSpaces(str){
     return str === null || str.match(/^ *$/) !== null;
 }

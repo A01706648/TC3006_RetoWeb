@@ -6,7 +6,7 @@ const isAuth = require('../util/is_auth');
 
 
 router.get('/new', isAuth, storyControl.new);
-router.post('/submit', isAuth, storyControl.submit);
+router.post('/', isAuth, storyControl.post);
 router.get('/', isAuth, storyControl.get);
 
 module.exports = router;

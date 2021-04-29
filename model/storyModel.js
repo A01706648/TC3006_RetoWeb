@@ -2,155 +2,101 @@ const db = require('../util/database')
 
 class StoryClass
 {
-    static story_list = [];
-
-    constructor(id
-                , project_id
-                , name
-                , description
-                , purpose
-                , comment
-                , stakeholder
-                , ap
-                , state)
+    constructor(story_obj)
     {
-        this.id = id;
-        this.project_id = project_id;
-        this.name = name;
-        this.description = description;
-        this.purpose = purpose;
-        this.comment = comment;
-        this.stakeholder = stakeholder;
-        this.ap = ap;
-        this.creatDate = Date.now();
-        this.state = state;
+        this.id = story_obj.id;
+        this.project_id = story_obj.project_id;
+        this.user_id = story_obj.user_id;
+        this.name = story_obj.name;
+        this.description = story_obj.description;
+        this.purpose = story_obj.purpose;
+        this.comment = story_obj.comment;
+        this.stakeholder = story_obj.stakeholder;
+        this.ap = story_obj.ap;
+        this.creatDate = story_obj.create_date;
+        this.est_date = story_obj.est_date;
+        this.state = story_obj.state;
     }
 
     static getEmpty()
     {
-        return    new StoryClass(0
-                                , 0
-                                , ''
-                                , ''
-                                , ''
-                                , ''
-                                , 0
-                                , 0
-                                , 0);
+        return    new StoryClass({id:0
+                                    ,project_id:null
+                                    ,user_id:null
+                                    ,create_date :new Date().toISOString().split('T')[0]
+                                    ,est_date:null
+                                    ,stakeholder:0
+                                    ,name:''
+                                    ,description:''
+                                    ,purpose :''
+                                    ,comment:''
+                                    ,ap:0
+                                    , state:0});
     }
 
-    static create(id
-                    , project_id
-                    , name
-                    , description = ''
-                    , purpose = ''
-                    , comment = ''
-                    , stakeholder = 0
-                    , ap = 0
-                    , state = 0)
+    dbsave()
     {
-        let story = new StoryClass(id
-                                , project_id
-                                , name
-                                , description
-                                , purpose
-                                , comment
-                                , stakeholder
-                                , ap
-                                , state);
-        this.story_list.push(story);
-
-        return story;
-    }
-
-    static modify(id
-                    , project_id
-                    , name
-                    , description = ''
-                    , purpose = ''
-                    , comment = ''
-                    , stakeholder = 0
-                    , ap = 0
-                    , state = 0)
-    {
-        let index = this.getIndexById(id);
-        let story = null;
-
-
-        if(index != -1)
-        {
-            this.story_list[index].name = name;
-            this.story_list[index].description = description;
-            this.story_list[index].purpose = purpose;
-            this.story_list[index].comment = comment;
-            this.story_list[index].stakeholder = stakeholder;
-            this.story_list[index].ap = ap;
-            this.story_list[index].state = state;
-            
-            project = this.story_list[index];
-        }
-        else
-        {
-            console.log("Project No Found");
-        }
-        return story;
-    }
-
-    static getCopyById(id)
-    {
-        let returnStory = null;
-
-        for(let story of this.story_list)
-        {
-            if(story.id == id)
-            {
-                returnStory = story;
-                break;
-            }
-        }
-
-        return returnStory;
-    }
-
-    static getByProject(project_id)
-    {
-        let returnStory_list = [];
-
-        for(let story of this.story_list)
-        {
-            if(story.project_id == project_id)
-            {
-                returnStory_list.push(story);
-            }
-        }
-
-        return returnStory_list;        
-    }
-
-    static getIndexById(id)
-    {
-        return this.story_list.findIndex((element)=>{
-                    if(element.id == id)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                });
-    }
-
-    static getList()
-    {
-        return this.story_list;
+        console.log("save story ");
+        return db.execute("CALL saveStory(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+                        , [this.id, this.project_id, this.user_id, this.name, this.create_date, this.est_date, this.description, this.purpose, this.comment, this.stakeholder, this.ap, this.state]);        
     }
 
     save()
     {
-        return db.execute('INSERT INTO project (id, name, create_date, est_date, description, state) VALUES (?, ?, ?, ?, ?, ?)',
-            [this.id, this.name, this.create_date, this.est_date, this.description, this.state]
-            );
+        this.dbsave()
+        .then(([rows, fieldData]) => {
+            //console.log(Object.keys(rows[0][0]));
+            let id = rows[0][0].id;
+            return id;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    static getById(id)
+    {
+        this.fetchOneById(id)
+        .then(([rows, fieldData]) => {
+            if(rows.length == 0)
+            {
+                console.log(`story ${id} not found, go to new project`);
+            }
+            else
+            {//get the story obj
+                console.log('Got story');
+                //console.log(rows[0]);
+                story_obj = new StoryClass(rows[0]);
+                return story_obj;
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    static getAll()
+    {
+        this.fetchAll()
+        .then(([rows, fieldData]) => {
+            let story_list = [...rows];
+            return story_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
+
+    static getByProject(project_id)
+    {
+        this.fetchAllByProject(project_id)
+        .then(([rows, fieldData]) => {
+            let story_list = [...rows];
+            return story_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });        
     }
 
     static fetchOneById(id)

@@ -30,7 +30,7 @@ function UserObj(id, name)
 //router.get('/new', projectControl.new);
 router.get('/new', isAuth, projectControl.new);
 //router.post('/submit', projectControl.submit);
-router.post('/submit', isAuth, projectControl.submit);
+router.post('/', isAuth, projectControl.post);
 //router.get('/', projectControl.get);
 router.get('/', isAuth, projectControl.get);
 

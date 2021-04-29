@@ -13,31 +13,37 @@ exports.get = (request, response, next) => {
 
     const queryObj = url.parse(request.url, true).query;
     console.log(queryObj);
+    let story_id = queryObj.id;
 
-    let story = storyModel.getCopyById(queryObj.id);
+    let story = storyModel.getById(story_id);
     let project;
-
-    if(!story)
+    if(story)
     {
-        console.log("No Story");
-        story = storyModel.getEmpty();
-        project = projectModel.getEmpty();
+        story = new storyModel(rows[0])
+        project = projectModel.getById(story.project_id);
+        if(!project)
+        {
+            console.log('Can not get Project');
+            project = projectModel.getEmpty();
+        }
+        console.log(`Project Id ${project.id}, Story Id ${story.id}`);
     }
     else
     {
-        console.log("Story Found");
-        console.log("Project Id");
-        console.log(story.project_id);
-        project = projectModel.getCopyById(story.project_id);
+        console.log(`story ${story_id} not found, go to new story`);
+        story = storyModel.getEmpty();
+        project = projectModel.getEmpty();
     }
+
+    console.log(story);
     response.render('story', {session:request.session,
                                 csrfToken:request.csrfToken(),
                                 story: story,
                                 project: project,
                                 task_list: taskModel.getByStory(story.id),
                                 test_list: testModel.getByStory(story.id),
-                                state: optionModel.getWorkState(),
-                                stakeholder: optionModel.getStakeholder()});
+                                state: optionModel.work_state,
+                                stakeholder: optionModel.stakeholder});
 }
 
 exports.new = (request, response, next) => {
@@ -48,7 +54,13 @@ exports.new = (request, response, next) => {
 
     let project_id = queryObj.id;//req.query.id;
     let story = storyModel.getEmpty();
-    let project = projectModel.getCopyById(project_id);
+    let project = projectModel.getById(project_id);
+
+    if(!project)
+    {
+        console.log(`can not find project ${project_id}`);
+        project = projectModel.getEmpty();
+    }
 
     response.render('story', {session:request.session,
                                 csrfToken:request.csrfToken(),
@@ -56,43 +68,18 @@ exports.new = (request, response, next) => {
                                 project: project,
                                 task_list: taskModel.getByStory(story.id),
                                 test_list: testModel.getByStory(story.id),
-                                state: optionModel.getWorkState(),
-                                stakeholder: optionModel.getStakeholder()});
+                                state: optionModel.work_state,
+                                stakeholder: optionModel.stakeholder});
 }
 
-exports.submit = (request, response, next) => {
+exports.post = (request, response, next) => {
     /*update story*/
     console.log("Set Story");
     console.log(request.body);
 
-    let id = request.body.id;
-    if(request.body.id == 0)
-    {/*New Story*/
-        id = storyModel.getList().length + 1;
-        console.log('new');
-        storyModel.create(id
-                            , request.body.project_id
-                            , request.body.name
-                            , request.body.description
-                            , request.body.purpose
-                            , request.body.comment
-                            , request.body.stakeholder
-                            , request.body.ap
-                            , request.body.state);
-    }
-    else
-    {/*Modify Project*/
-        projectModel.modify(id
-                            , request.body.name
-                            , request.body.project_id
-                            , request.body.description
-                            , request.body.purpose
-                            , request.body.comment
-                            , request.body.stakeholder
-                            , request.body.ap
-                            , request.body.state);
-    }
-
+    let story = new storyModel(request.body);
+    let id = story.save();
+    
     console.log(`id is ${id}`);
 
     response.redirect(`/story/?id=${id}`);

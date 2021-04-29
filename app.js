@@ -17,6 +17,8 @@ const storyRoute = require(path.join(__dirname, "routes", "storyRoute.js"));
 const loginRoute = require(path.join(__dirname, "routes", "loginRoute.js"));
 const userRoute = require(path.join(__dirname, "routes", "userRoute.js"));
 
+const optionModel = require(path.join(__dirname, "model", "optionModel.js"));
+
 
 //use EJS as view layer engine, use views folder to store html files
 app.set('view engine', 'ejs');
@@ -48,6 +50,9 @@ app.use(session({
 //must be after use(cookieParser()) and use(session)
 app.use(csrfProtection);
 
+//Get Option Inited
+optionModel.init();
+//console.log(optionModel.work_state);
 app.get('/', (request, response, next) => {
     if(request.session.isLoggedIn)
     {

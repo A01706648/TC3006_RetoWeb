@@ -24,12 +24,12 @@ CREATE PROCEDURE saveProject(   IN id INT,
                                 IN create_date DATE, 
                                 IN est_date DATE, 
                                 IN description VARCHAR(1024), 
-                                IN state INT,
-                                OUT saved_id INT)
+                                IN state INT)
 BEGIN
     DECLARE exist_project INT DEFAULT 0;
     DECLARE new_id INT DEFAULT 0;
     DECLARE row_num INT DEFAULT 0;
+    DECLARE saved_id INT DEFAULT 0;
 
     SELECT COUNT(*) INTO exist_project FROM project WHERE project.id=id;
 
@@ -50,6 +50,7 @@ BEGIN
         VALUES (new_id, name, create_date, est_date, description, state);
         SET saved_id=new_id;
     END IF;
+    SELECT saved_id as id;
 END $$
 DELIMITER ;
 
@@ -65,12 +66,12 @@ CREATE PROCEDURE saveStory( IN id INT,
                             IN comment VARCHAR(1024),
                             IN stakeholder INT,
                             IN ap INT,
-                            IN state INT,
-                            OUT saved_id INT)
+                            IN state INT)
 BEGIN
     DECLARE exist_story INT DEFAULT 0;
     DECLARE new_id INT DEFAULT 0;
     DECLARE row_num INT DEFAULT 0;
+    DECLARE saved_id INT DEFAULT 0;
 
     SELECT COUNT(*) INTO exist_story FROM story WHERE story.id=id;
 
@@ -91,6 +92,7 @@ BEGIN
         VALUES (new_id, project_id, user_id, name, create_date, est_date, description, purpose, comment, stakeholder, ap, state);
         SET saved_id=new_id;
     END IF;
+    SELECT saved_id as id;
 END $$
 DELIMITER ;
 
@@ -110,12 +112,12 @@ CREATE PROCEDURE saveTask( IN id INT,
                             IN stakeholder INT,
                             IN value INT,
                             IN type INT,
-                            IN state INT,
-                            OUT saved_id INT)
+                            IN state INT)
 BEGIN
     DECLARE exist_task INT DEFAULT 0;
     DECLARE new_id INT DEFAULT 0;
     DECLARE row_num INT DEFAULT 0;
+    DECLARE saved_id INT DEFAULT 0;
 
     SELECT COUNT(*) INTO exist_task FROM task WHERE task.id=id;
 
@@ -136,6 +138,7 @@ BEGIN
         VALUES (new_id, story_id, user_id, name, create_date, est_date, real_date, description, purpose, comment, est_hour, real_hour, stakeholder, value, type, state);
         SET saved_id=new_id;
     END IF;
+    SELECT saved_id as id;
 END $$
 DELIMITER ;
 
@@ -148,12 +151,12 @@ CREATE PROCEDURE saveTest( IN id INT,
                             IN description VARCHAR(1024), 
                             IN expect VARCHAR(1024),
                             IN comment VARCHAR(1024),
-                            IN state INT,
-                            OUT saved_id INT)
+                            IN state INT)
 BEGIN
     DECLARE exist_test INT DEFAULT 0;
     DECLARE new_id INT DEFAULT 0;
     DECLARE row_num INT DEFAULT 0;
+    DECLARE saved_id INT DEFAULT 0;
 
     SELECT COUNT(*) INTO exist_test FROM test WHERE test.id=id;
 
@@ -174,6 +177,7 @@ BEGIN
         VALUES (new_id, story_id, user_id, name, create_date, description, expect, comment, state);
         SET saved_id=new_id;
     END IF;
+    SELECT saved_id as id;
 END $$
 DELIMITER ;
 
@@ -182,10 +186,10 @@ CREATE PROCEDURE saveUser( IN id VARCHAR(64),
                             IN name VARCHAR(64),
                             IN password VARCHAR(128),
                             IN cost INT, 
-                            IN role_id INT,
-                            OUT saved_id VARCHAR(64))
+                            IN role_id INT)
 BEGIN
     DECLARE exist_user INT DEFAULT 0;
+    DECLARE saved_id VARCHAR(64) DEFAULT '';
 
     SELECT COUNT(*) INTO exist_user FROM user WHERE user.id=id;
 

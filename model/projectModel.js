@@ -2,56 +2,14 @@ const db = require('../util/database')
 
 class ProjectClass
 {
-    static project_list = [];
-
     constructor(project_obj)
     {
         this.id = project_obj.id;
         this.name = project_obj.name;
         this.description = project_obj.description;
-        this.creatDate = new Date(project_obj.creatDate);
-        this.est_date = new Date(project_obj.est_date);
+        this.create_date = project_obj.create_date;//new Date(project_obj.create_date);
+        this.est_date = project_obj.est_date;//new Date(project_obj.est_date);
         this.state = project_obj.state;
-    }
-
-    static create(id
-                    , name
-                    , description 
-                    , state)
-    {
-        let project = new ProjectClass(id
-                                    , name
-                                    , description
-                                    , state);
-        this.project_list.push(project);
-
-        return project;
-    }
-
-    static modify(id
-                , name
-                , description
-                , state)
-    {
-        let index = this.getIndexById(id);
-        let project = null;
-
-
-        if(index != -1)
-        {
-            this.project_list[index].name = name;
-            this.project_list[index].description = description;
-            this.project_list[index].state = state;
-            
-            project = this.project_list[index];
-
-            console.log(this.project_list[index].description);
-        }
-        else
-        {
-            console.log("Project No Found");
-        }
-        return project;
     }
 
     static getEmpty()
@@ -59,62 +17,88 @@ class ProjectClass
         return    new ProjectClass({id:0
                                     , name : ''
                                     , description : ''
-                                    , create_date: (new Date()).toISOString()
+                                    , create_date: new Date().toISOString().split('T')[0]
                                     , est_date: null
                                     , state : 0});
     }
 
-    returnObj()
+    dbsave()
     {
-        return {id:this.id
-                , name : this.name
-                , description : this.description
-                , create_date: this.creatDate
-                , est_date: this.est_date
-                , state : this.state};
+        console.log("save project ");
+        //console.log(this.est_date);
+        return db.execute("CALL saveProject(?, ?, ?, ?, ?, ?);"
+                        , [this.id, this.name, this.create_date, this.est_date, this.description, this.state]);
     }
 
     save()
     {
-
+        this.dbsave()
+        .then(([rows, fieldData]) => {
+            //console.log(Object.keys(rows[0][0]));
+            let id = rows[0][0].id;
+            return id;
+        })
+        .catch(err => {
+            console.log(err);
+        });        
     }
 
-    static getCopyById(id)
+    static getById(id)
     {
-        return this.project_list.find((element)=>{
-            if(element.id == id)
+        this.fetchOneById(id)
+        .then(([rows, fieldData]) => {
+            if(rows.length == 0)
             {
-                return true;
+                console.log(`Project ${id} not found, go to new project`);
             }
             else
-            {
-                return false;
+            {//get the project obj
+                console.log('Got Project');
+                //console.log(rows[0]);
+                project_obj = new ProjectClass(rows[0]);
+                return project_obj;
             }
+        })
+        .catch(err => {
+            console.log(err);
         });
     }
 
-    static getIndexById(id)
+    static getAll()
     {
-        return this.project_list.findIndex((element)=>{
-                    if(element.id == id)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                });
+        this.fetchAll()
+        .then(([rows, fieldData]) => {
+            let project_list = [...rows];
+            return project_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });    
     }
 
-    static getList()
+    static getByUser(user_id)
     {
-        return this.project_list;
+        this.fetchAllByUser(user_id)
+        .then(([rows, fieldData]) => {
+            let project_list = [...rows];
+            return project_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });           
     }
 
     static fetchAll()
     {
         return db.execute('SELECT * FROM project');
+    }
+
+    static fetchAllByUser(user_id)
+    {
+        return db.execute("SELECT * \
+        FROM project INNER JOIN project_assignment \
+        ON project.id=project_assignment.project_id \
+        WHERE project_assignment.user_id=?", [user_id]);
     }
 
     static fetchOneById(id)

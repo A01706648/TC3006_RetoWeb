@@ -23,18 +23,20 @@
         <div class="col s12">
             <div class="row">
                 <div class="col s6">
-                    <form action=<%= `/task/new/?id=${story.id}` %> method="GET">
+                    <a class="btn waves-effect waves-light" href=<%= `/task/new/?id=${story.id}` %>><i class="material-icons right">create_new_folder</i>New Task</a>
+                    <!--form action=<%= `/task/new/?id=${story.id}` %> method="GET">
                         <button class="btn waves-effect waves-light" type="submit" id="NewStoryBtn">New Task
                             <i class="material-icons right">create_new_folder</i>
                         </button>   
-                    </form>
+                    </form-->
                 </div>
                 <div class="col s6">
-                    <form action=<%= `/test/new/?id=${story.id}` %> method="GET">
+                    <a class="btn waves-effect waves-light" href=<%= `/test/new/?id=${story.id}` %>><i class="material-icons right">create_new_folder</i>New Test</a>
+                    <!--form action=<%= `/test/new/?id=${story.id}` %> method="GET">
                         <button class="btn waves-effect waves-light" type="submit" id="NewStoryBtn">New Test
                             <i class="material-icons right">create_new_folder</i>
                         </button>   
-                    </form>        
+                    </form-->        
                 </div>
             </div>
         </div>
@@ -54,24 +56,22 @@
             <div class="row">
                 <form class="col s12" id="form_story_detail" action="\story\submit" method="POST">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <input type="hidden" name="create_date" value="<%= story.create_date %>">
+                    <input type="hidden" name="project_id" value="<%= story.project_id %>">
+                    <input type="hidden" name="id" value="<%= story.id %>">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="id" name="id" type="hidden" class="validate" value=<%= story.id %>>
-                            <!--label for="id">ID</label-->
+                            <input id="name" name="name" type="text" class="validate" value=<%= story.name %>>
+                            <label for="name">name</label>
+                            <span class="helper-text red-text" id="name_helper"></span>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input id="project_id" name="project_id" type="hidden" class="validate" value=<%= project.id %>>
-                            <!--label for="id">Project ID</label-->
-                        </div>
-                    </div>                                         
-                    <div class="row">
-                        <div class="input-field col s12">
                             <select name="state" id="state" value=<%= story.state %>>
-                                <% for(key of Object.keys(state)){ %>                                
-                                    <option value=<%= state[key] %> 
-                                        <% if(story.state == state[key]){ %> selected <% } %>><%= key %></option>
+                                <% for(option of state){ %>                                
+                                    <option value=<%= option.id %> 
+                                        <% if(story.state == option.id){ %> selected <% } %>><%= option.name %></option>
                                 <%}%>
                             </select>
                             <label>State</label>                            
@@ -80,28 +80,27 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <select name="stakeholder" id="stakeholder" value=<%= story.stakeholder %>>
-                                <% for(key of Object.keys(stakeholder)){ %>                                
-                                    <option value=<%= stakeholder[key] %> 
-                                        <% if(story.stakeholder == stakeholder[key]){ %> selected <% } %>><%= key %></option>
+                                <% for(option of stakeholder){ %>                                
+                                    <option value=<%= option.id %> 
+                                        <% if(story.stakeholder == option.id){ %> selected <% } %>><%= option.name %></option>
                                 <%}%>
                             </select>
                             <label>stakeholder</label>                            
                         </div>
-                    </div>                               
-                    <div class="row">
-                        <div class="input-field col s12">
-                            <input id="name" name="name" type="text" class="validate" value=<%= story.name %>>
-                            <label for="name">name</label>
-                            <span class="helper-text red-text" id="name_helper"></span>
-                        </div>
-                    </div>     
-
+                    </div>  
                     <div class="row">
                         <div class="input-field col s12">
                             <input id="ap" name="ap" type="number" class="validate" value=<%= story.ap %>>
                             <label for="ap">ap</label>
                         </div>
-                    </div>     
+                    </div>                              
+                    <div class="row">
+                        <div class="input-field col s2">
+                            <input id="est_date" name="est_date" type="text" class="datepicker" value="<%= story.est_date %>">
+                            <label for="est_date">Estimated Finish Date</label>
+                        </div>
+                    </div>
+                        
 
                     <div class="row">
                         <div class="input-field col s12">
