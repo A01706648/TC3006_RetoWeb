@@ -27,7 +27,9 @@ exports.get = async (request, response, next) => {
     let project_obj = await projectModel.getById(project_id);
     let story_list = await storyModel.getByProject(project_obj.id);
     let user_list = await userModel.getByProject(project_obj.id);
+    let usernonull_list = await userModel.getByProjectNoNull(project_obj.id);
     let all_user_list = await userModel.getAll();
+    let allnonull_user_list = await userModel.getAllNoNull();
 /*
     let project;
     let story_array;
@@ -59,7 +61,9 @@ exports.get = async (request, response, next) => {
                                project: project_obj,
                                story_list: story_list,
                                user_list: user_list,
+                               usernonull_list:usernonull_list,
                                all_user_list: all_user_list,
+                               allnonull_user_list:allnonull_user_list,
                                state: optionModel.work_state});   
 }
 
@@ -69,14 +73,18 @@ exports.new = async (request, response, next) => {
     let project_obj = projectModel.getEmpty();
     let story_list = [];//await storyModel.getByProject(project_obj.id);
     let user_list = [];//await projectAssignModel.getByProject(project_obj.id);  
+    let usernonull_list = [];
     let all_user_list = await userModel.getAll();  
+    let allnonull_user_list = await userModel.getAllNoNull();
 
     response.render('project', {session:request.session,
                                 csrfToken:request.csrfToken(),
                                 project: project_obj,
                                 story_list: story_list,
                                 user_list: user_list,
+                                usernonull_list:usernonull_list,
                                 all_user_list: all_user_list,
+                                allnonull_user_list:allnonull_user_list,
                                 state: optionModel.work_state});
 }
 

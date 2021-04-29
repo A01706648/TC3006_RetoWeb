@@ -104,7 +104,7 @@
                 <div class="row">
                     <div class="input-field col s4">
                         <select name="user_id" id="user_id" value='null'>
-                            <% for(user of all_user_list){ %>                                
+                            <% for(user of allnonull_user_list){ %>                                
                                 <option value=<%= user.id %>
                                     <% if(user.id == 'null'){ %> selected <% } %>><%= user.name %></option>
                             <%}%>
@@ -132,7 +132,7 @@
                 </thead>
 
                 <tbody>
-                    <% for (let user of user_list) { %>
+                    <% for (let user of usernonull_list) { %>
                         <tr>
                             <td> <%= user.id %> </td>
                             <td> <%= user.name %> </td>

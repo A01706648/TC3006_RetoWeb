@@ -109,7 +109,7 @@ class AssignClass
 
     static fetchAllByStory(story_id)
     {
-        return db.execute("SELECT * FROM project_assignment WHERE story_id=? AND user_id<>'null'", [story_id]);
+        return db.execute("SELECT * FROM project_assignment WHERE story_id=?", [story_id]);
     } 
     
     static remove(project_id, user_id)

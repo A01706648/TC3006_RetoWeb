@@ -103,6 +103,18 @@ class UserClass
         }); 
     }
 
+    static getByProjectNoNull(project_id)
+    {
+        return this.fetchAllByProjectNoNull(project_id)
+        .then(([rows, fieldData]) => {
+            let user_list = [...rows];
+            return user_list;
+        })
+        .catch(err => {
+            console.log(err);
+        }); 
+    }    
+
     static getAll()
     {
         return this.fetchAll()
@@ -115,6 +127,18 @@ class UserClass
         });
     }
 
+    static getAllNoNull()
+    {
+        return this.fetchAllNoNull()
+        .then(([rows, fieldData]) => {
+            let user_list = [...rows];
+            return user_list;
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }    
+
     static fetchOneById(id) 
     {
         return db.execute('SELECT * FROM user WHERE id=?', [id]);
@@ -125,12 +149,24 @@ class UserClass
         return db.execute('SELECT * FROM user');
     }
 
+    static fetchAllNoNull()
+    {
+        return db.execute("SELECT * FROM user WHERE id!='null'");
+    }
+
     static fetchAllByProject(project_id)
     {
         return db.execute("SELECT * \
         FROM user INNER JOIN project_assignment ON user.id=project_assignment.user_id \
-        WHERE project_assignment.project_id=? AND user.id!='null';", [project_id]);
+        WHERE project_assignment.project_id=?;", [project_id]);
     }    
+
+    static fetchAllByProjectNoNull(project_id)
+    {
+        return db.execute("SELECT * \
+        FROM user INNER JOIN project_assignment ON user.id=project_assignment.user_id \
+        WHERE project_assignment.project_id=? AND user.id!='null';", [project_id]);
+    }        
 
     static getPrevilige(id)
     {
