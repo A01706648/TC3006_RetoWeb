@@ -30,6 +30,8 @@ exports.get = async (request, response, next) => {
     let usernonull_list = await userModel.getByProjectNoNull(project_obj.id);
     let all_user_list = await userModel.getAll();
     let allnonull_user_list = await userModel.getAllNoNull();
+    let wbs = await projectModel.getWbsByProject(project_id);
+    let phase_list = optionModel.phase;
 /*
     let project;
     let story_array;
@@ -64,7 +66,9 @@ exports.get = async (request, response, next) => {
                                usernonull_list:usernonull_list,
                                all_user_list: all_user_list,
                                allnonull_user_list:allnonull_user_list,
-                               state: optionModel.work_state});   
+                               state: optionModel.work_state,
+                                wbs:wbs,
+                                phase_list:phase_list});   
 }
 
 exports.new = async (request, response, next) => {
@@ -76,6 +80,8 @@ exports.new = async (request, response, next) => {
     let usernonull_list = [];
     let all_user_list = await userModel.getAll();  
     let allnonull_user_list = await userModel.getAllNoNull();
+    let wbs  = [];
+    let phase_list = optionModel.phase;
 
     response.render('project', {session:request.session,
                                 csrfToken:request.csrfToken(),
@@ -85,7 +91,9 @@ exports.new = async (request, response, next) => {
                                 usernonull_list:usernonull_list,
                                 all_user_list: all_user_list,
                                 allnonull_user_list:allnonull_user_list,
-                                state: optionModel.work_state});
+                                state: optionModel.work_state,
+                                wbs:wbs,
+                                phase_list:phase_list});
 }
 
 exports.post = async (request, response, next) => {

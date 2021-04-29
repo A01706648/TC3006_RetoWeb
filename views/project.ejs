@@ -29,6 +29,7 @@
                 <li class="tab col s3"><a href="#div_project_detail">Detail</a></li>
                 <li class="tab col s3"><a href="#div_story_list">Story List</a></li>
                 <li class="tab col s3"><a href="#div_user_list">User List</a></li>
+                <li class="tab col s3"><a href="#div_wbs">WBS</a></li>
             </ul>
         </div>
    
@@ -143,6 +144,36 @@
             </table>
         </div><!--End of User Div--> 
     
+        <div id="div_wbs" class="col s12">
+            <table class="striped">
+                <% if(project.id != 0){ %>
+                <thead>
+                    <th>Story</th>
+                    <th>Task</th>
+                    <% for(let phase of phase_list){ %>
+                        <th> <%= phase.name %> </th>
+                    <% } %>
+                </thead>
+
+                <tbody>
+                    <% for(let task of wbs){ %>
+                        <tr>
+                            <td><a href=<%= `/story/?id=${task.story_id}` %>> <%= task.story_id %> <%= task.story_name %> </a></td>
+                            <td><a href=<%= `/task/?id=${task.task_id}` %>> <%= task.task_id %> <%= task.task_name %> </a></td>
+                            <% for(let phase of phase_list){ %>
+                                <% if(phase.id == task.phase_id){ %>
+                                    <td>*<%= task.real_hour %>* </td>
+                                <% }else{ %>
+                                    <td></td>
+                                <% } %>
+                            <% } %>
+                        </tr>
+                    <% } %>
+                </tbody>
+                <% } %>
+            </table>
+        </div><!--End of WBS-->
+
     </div><!--End of Tab div--> 
     
 
