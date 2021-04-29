@@ -18,12 +18,12 @@ exports.get = async (request, response, next) => {
     let task = await taskModel.getById(task_id);
     let story;
     let project;
-    let user_list;
+    let user_list = [];
     if(task)
     {
         story = await storyModel.getById(task.story_id);
         
-        user_list = await userModel.getAll();
+        
         //user_list.push({id:"null", name:'unsigned'});
         if(!story)
         {
@@ -52,6 +52,15 @@ exports.get = async (request, response, next) => {
         project = projectModel.getEmpty();
     }
 
+    if(project)
+    {
+        user_list = await userModel.getByProject(project.id);
+    }
+    else
+    {
+        user_list = await userModel.getAll();
+    }
+
     console.log(task);
     response.render('task', {session:request.session,
                                 csrfToken:request.csrfToken(),
@@ -62,4 +71,61 @@ exports.get = async (request, response, next) => {
                                 state: optionModel.work_state,
                                 stakeholder: optionModel.stakeholder,
                                 type: optionModel.task_type});
+}
+
+exports.new = async (request, response, next) => {
+    console.log('new task');
+
+    const queryObj = url.parse(request.url, true).query;
+    console.log(queryObj);
+
+    let story_id = queryObj.id;
+    let task = await taskModel.getEmpty();
+    task.user_id = 'null';
+    task.story_id = story_id;
+    let story = await storyModel.getById(story_id);
+    let project;
+    let user_list = [];
+
+    if(story)
+    {
+        project = await projectModel.getById(story.project_id);
+    }
+
+    if(!story)
+    {
+        story = storyModel.getEmpty();
+    }
+    if(!project)
+    {
+        project = projectModel.getEmpty();
+        user_list = await userModel.getAll();
+    }
+    else
+    {
+        user_list = await userModel.getByProject(project.id);
+    }
+
+    response.render('task', {session:request.session,
+        csrfToken:request.csrfToken(),
+        task: task,
+        story: story,
+        project: project,
+        user_list: user_list,
+        state: optionModel.work_state,
+        stakeholder: optionModel.stakeholder,
+        type: optionModel.task_type});
+};
+
+exports.post = async (request, response, next) => {
+    /*update story*/
+    console.log("Set Task");
+    console.log(request.body);
+
+    let task = new taskModel(request.body);
+    let id = await task.save();
+    
+    console.log(`id is ${id}`);
+
+    response.redirect(`/task/?id=${id}`);
 }

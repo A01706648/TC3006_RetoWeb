@@ -1,0 +1,158 @@
+<%- include('includes/head.ejs') %>  
+
+    <div id="div_task_info">
+        <div class="col s12">
+            <div class="row">
+                <% if(task.id) { %>
+                    <h1>Task <%= task.id %></h1>
+                <% }else{ %>
+                    <h1>New Task</h1>
+                <% } %>
+            </div>  
+            <div class="row">
+                <h2><%= task.name %></h2>
+            </div>
+            <div class="row">
+                <a href=<%= `../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
+            </div>
+            <div class="row">
+                <a href=<%= `../story/?id=${story.id}` %>><%= `Story ${story.id}: ${story.name}` %></a>
+            </div>
+        </div>
+    </div>
+
+    <div id="div_task_tab">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a href="#div_task_detail">Detail</a></li>
+            </ul>
+        </div>
+   
+        <div id="div_task_detail" class="col s12">
+            <div class="row">
+                <form class="col s12" id="form_task_detail" action="\task\" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                    <input type="hidden" name="create_date" value="<%= task.create_date %>">
+                    <input type="hidden" name="story_id" value="<%= task.story_id %>">
+                    <input type="hidden" name="id" value="<%= task.id %>">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="name" name="name" type="text" class="validate" value=<%= task.name %>>
+                            <label for="name">name</label>
+                            <span class="helper-text red-text" id="name_helper"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="state" id="state" value=<%= task.state %>>
+                                <% for(option of state){ %>                                
+                                    <option value=<%= option.id %> 
+                                        <% if(task.state == option.id){ %> selected <% } %>><%= option.name %></option>
+                                <%}%>
+                            </select>
+                            <label>State</label>                            
+                        </div>
+                    </div>          
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="stakeholder" id="stakeholder" value=<%= task.stakeholder %>>
+                                <% for(option of stakeholder){ %>                                
+                                    <option value=<%= option.id %> 
+                                        <% if(task.stakeholder == option.id){ %> selected <% } %>><%= option.name %></option>
+                                <%}%>
+                            </select>
+                            <label>stakeholder</label>                            
+                        </div>
+                    </div>  
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="type" id="type" value=<%= task.type %>>
+                                <% for(option of type){ %>                                
+                                    <option value=<%= option.id %> 
+                                        <% if(task.type == option.id){ %> selected <% } %>><%= option.name %></option>
+                                <%}%>
+                            </select>
+                            <label>Task Type</label>                            
+                        </div>
+                    </div> 
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="value" name="value" type="number" class="validate" value=<%= task.value %>>
+                            <label for="value">value</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <select name="user_id" id="user_id" value=<%= task.user_id %>>
+                                <% for(user of user_list){ %>                                
+                                    <option value=<%= user.id %>
+                                        <% if(task.user_id == user.id){ %> selected <% } %>><%= user.name %></option>
+                                <%}%>
+                            </select>
+                            <label>Assigned User</label>                            
+                        </div>
+                    </div>                                                  
+                    <div class="row">
+                        <div class="input-field col s3">
+                            <input id="est_date" name="est_date" type="text" class="datepicker" value="<%= task.est_date %>">
+                            <label for="est_date">Estimated Finish Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s3">
+                            <input id="real_date" name="real_date" type="text" class="datepicker" value="<%= task.real_date %>">
+                            <label for="real_date">Real Finish Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="est_hour" name="est_hour" type="number" class="validate" value=<%= task.est_hour %>>
+                            <label for="est_hour">Estimated Hour</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="real_hour" name="real_hour" type="number" class="validate" value=<%= task.real_hour %>>
+                            <label for="real_hour">Real Hour</label>
+                        </div>
+                    </div>
+                        
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="description" name="description" type="text" class="validate" value=<%= task.description %>>
+                            <label for="description">description</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="purpose" name="purpose" type="text" class="validate" value=<%= task.purpose %>>
+                            <label for="purpose">purpose</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input id="comment" name="comment" type="text" class="validate" value=<%= task.comment %>>
+                            <label for="comment">comment</label>
+                        </div>
+                    </div>
+
+                    <button class="btn waves-effect waves-light" type="button" name="SaveBtn" onclick="SaveBtnHandler();">Save
+                        <i class="material-icons right">send</i>
+                    </button>                            
+                </form>
+                
+            </div>
+        </div><!--End of Detail Div-->
+    </div><!--End of Tab div--> 
+    
+
+    <div id="div_control">
+
+    </div>
+
+
+
+    <%- include('includes/tail.ejs') %>
+    <script src="/js/task.js"></script> 
+    <%- include('includes/end.ejs') %>

@@ -77,7 +77,7 @@ exports.new = async (request, response, next) => {
                                 story_list: story_list,
                                 user_list: user_list,
                                 all_user_list: all_user_list,
-                                state: optionModel.getWorkState()});
+                                state: optionModel.work_state});
 }
 
 exports.post = async (request, response, next) => {

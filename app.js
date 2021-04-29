@@ -16,6 +16,7 @@ const projectRoute = require(path.join(__dirname, "routes", "projectRoute.js"));
 const storyRoute = require(path.join(__dirname, "routes", "storyRoute.js"));
 const loginRoute = require(path.join(__dirname, "routes", "loginRoute.js"));
 const userRoute = require(path.join(__dirname, "routes", "userRoute.js"));
+const taskRoute = require(path.join(__dirname, "routes", "taskRoute.js"));
 
 const optionModel = require(path.join(__dirname, "model", "optionModel.js"));
 
@@ -71,6 +72,7 @@ app.use('/home', homeRoute);
 app.use('/project', projectRoute);
 app.use('/story', storyRoute);
 app.use('/user', userRoute);
+app.use('/task', taskRoute);
 /*
 app.use('/task', storyRoute);
 app.use('/test', testRoute);
