@@ -90,6 +90,9 @@ exports.post = async (request, response, next) => {
     let id = await project_obj.save();
     if(id)
     {
+        let assign = assignModel.getEmpty();
+        assign.project_id = id;
+        await assign.save();//add NOT Assigned to the project        
         //set cookie value
         response.setHeader('Set-Cookie', [`last_id=${id}; HttpOnly`]);    
         console.log(`id is ${id}`);

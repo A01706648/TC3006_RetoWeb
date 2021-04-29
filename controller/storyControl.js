@@ -95,9 +95,6 @@ exports.post = async (request, response, next) => {
 
     let story = new storyModel(request.body);
     let id = await story.save();
-    let assign = assignModel.getEmpty();
-    assign.project_id = id;
-    await assign.save();//add NOT Assigned to the project
     
     console.log(`id is ${id}`);
 
