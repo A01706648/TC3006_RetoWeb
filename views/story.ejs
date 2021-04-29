@@ -12,9 +12,16 @@
             <div class="row">
                 <h2><%= story.name %></h2>
             </div>
-            <div class="row">
-                <a href=<%= `../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
-            </div>
+            <% if(story.id) { %>
+                <div class="row">
+                    <a href=<%= `../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
+                </div>
+            <% }else{ %>
+                <div class="row">
+                    <a href=<%= `../../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
+                </div>
+            <% } %>
+            
         </div>
     </div>
 

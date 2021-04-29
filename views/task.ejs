@@ -12,12 +12,21 @@
             <div class="row">
                 <h2><%= task.name %></h2>
             </div>
-            <div class="row">
-                <a href=<%= `../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
-            </div>
-            <div class="row">
-                <a href=<%= `../story/?id=${story.id}` %>><%= `Story ${story.id}: ${story.name}` %></a>
-            </div>
+            <% if(task.id) { %>
+                <div class="row">
+                    <a href=<%= `../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
+                </div>
+                <div class="row">
+                    <a href=<%= `../story/?id=${story.id}` %>><%= `Story ${story.id}: ${story.name}` %></a>
+                </div>
+            <% }else{ %>
+                <div class="row">
+                    <a href=<%= `../../project/?id=${project.id}` %>><%= `Project ${project.id}: ${project.name}` %></a>
+                </div>
+                <div class="row">
+                    <a href=<%= `../../story/?id=${story.id}` %>><%= `Story ${story.id}: ${story.name}` %></a>
+                </div>
+            <% } %>
         </div>
     </div>
 
