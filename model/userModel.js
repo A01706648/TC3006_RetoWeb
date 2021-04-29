@@ -127,9 +127,9 @@ class UserClass
 
     static fetchAllByProject(project_id)
     {
-        return db.execute('SELECT * \
+        return db.execute("SELECT * \
         FROM user INNER JOIN project_assignment ON user.id=project_assignment.user_id \
-        WHERE project_assignment.project_id=?;', [project_id]);
+        WHERE project_assignment.project_id=? AND user.id!='null';", [project_id]);
     }    
 
     static getPrevilige(id)
