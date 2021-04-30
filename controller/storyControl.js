@@ -21,7 +21,7 @@ exports.get = async (request, response, next) => {
     let project;
     let task_list = [];
     let test_list = [];
-    let user_list;
+    let user_list = [];
     if(story)
     {
         project = await projectModel.getById(story.project_id);

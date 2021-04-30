@@ -18,7 +18,7 @@ class ProjectClass
                                     , name : ''
                                     , description : ''
                                     , create_date: new Date().toISOString().split('T')[0]
-                                    , est_date: null
+                                    , est_date: new Date().toISOString().split('T')[0]
                                     , state : 0});
     }
 

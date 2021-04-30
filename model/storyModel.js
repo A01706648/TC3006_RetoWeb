@@ -24,7 +24,7 @@ class StoryClass
                                     ,project_id:null
                                     ,user_id:null
                                     ,create_date :new Date().toISOString().split('T')[0]
-                                    ,est_date:null
+                                    ,est_date:new Date().toISOString().split('T')[0]
                                     ,stakeholder:0
                                     ,name:''
                                     ,description:''

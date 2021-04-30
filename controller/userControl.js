@@ -33,6 +33,7 @@ exports.postLogin = (request, response, next) => {
        .then(([rows, fieldData]) => {
             if (rows.length < 1) 
             {
+                console.log(`user id ${id} not found`);
                 request.session.error = "The User and/or the Password is not Match";
                 response.redirect('/user/login');
             } 
@@ -41,8 +42,9 @@ exports.postLogin = (request, response, next) => {
                 let user_obj = rows[0];
                 console.log(user_obj);
 
-                if(user_obj.password == null)
+                if(user_obj.password == null && user_obj.id=='admin')
                 {//empty password
+                    console.log('Admin Login');
                     return login_process(request, response);
                 }
                 else
@@ -51,10 +53,12 @@ exports.postLogin = (request, response, next) => {
                         .then(doMatch => {
                             if (doMatch) 
                             {
+                                console.log('psw match');
                                 return login_process(request, response);
                             }
                             else
                             {
+                                console.log('psw NOT match');
                                 request.session.error = "The User and/or the Password is not Match";
                                 response.redirect('/user/login');
                             }

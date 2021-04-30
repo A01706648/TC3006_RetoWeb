@@ -31,11 +31,11 @@ class TaskClass
                             ,description:''
                             ,purpose:''
                             , comment:''
-                            , creat_date:new Date().toISOString().split('T')[0]
+                            , create_date:new Date().toISOString().split('T')[0]
                             , est_hour:0
                             , real_hour:0
-                            , est_date:null
-                            , real_date:null
+                            , est_date:new Date().toISOString().split('T')[0]
+                            , real_date:new Date().toISOString().split('T')[0]
                             , type:0
                             , state:0
                             , stakeholder:0
