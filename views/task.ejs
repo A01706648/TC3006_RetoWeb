@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <select name="state" id="state" value=<%= task.state %>>
                                 <% for(option of state){ %>                                
                                     <option value=<%= option.id %> 
@@ -61,9 +61,7 @@
                             </select>
                             <label>State</label>                            
                         </div>
-                    </div>          
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <select name="stakeholder" id="stakeholder" value=<%= task.stakeholder %>>
                                 <% for(option of stakeholder){ %>                                
                                     <option value=<%= option.id %> 
@@ -72,9 +70,11 @@
                             </select>
                             <label>stakeholder</label>                            
                         </div>
-                    </div>  
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
+                            <input id="value" name="value" type="number" class="validate" value=<%= task.value %>>
+                            <label for="value">value</label>
+                        </div>
+                        <div class="input-field col s3">
                             <select name="type" id="type" value=<%= task.type %>>
                                 <% for(option of type){ %>                                
                                     <option value=<%= option.id %> 
@@ -82,16 +82,10 @@
                                 <%}%>
                             </select>
                             <label>Task Type</label>                            
-                        </div>
-                    </div> 
+                        </div> 
+                    </div>   
                     <div class="row">
-                        <div class="input-field col s12">
-                            <input id="value" name="value" type="number" class="validate" value=<%= task.value %>>
-                            <label for="value">value</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <select name="user_id" id="user_id" value=<%= task.user_id %>>
                                 <% for(user of user_list){ %>                                
                                     <option value=<%= user.id %>
@@ -106,26 +100,19 @@
                             <input id="est_date" name="est_date" type="text" class="datepicker" value="<%= task.est_date %>">
                             <label for="est_date">Estimated Finish Date</label>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="input-field col s3">
                             <input id="real_date" name="real_date" type="text" class="datepicker" value="<%= task.real_date %>">
                             <label for="real_date">Real Finish Date</label>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s2">
                             <input id="est_hour" name="est_hour" type="number" class="validate" value=<%= task.est_hour %>>
                             <label for="est_hour">Estimated Hour</label>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s2">
                             <input id="real_hour" name="real_hour" type="number" class="validate" value=<%= task.real_hour %>>
                             <label for="real_hour">Real Hour</label>
                         </div>
                     </div>
-                        
 
                     <div class="row">
                         <div class="input-field col s12">

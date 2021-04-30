@@ -38,7 +38,7 @@
                     </form-->
                 </div>
                 <div class="col s6">
-                    <a class="btn waves-effect waves-light" href=<%= `/test/new/?id=${story.id}` %>><i class="material-icons right">create_new_folder</i>New Test</a>
+                    <!--a class="btn waves-effect waves-light" href=<%= `/test/new/?id=${story.id}` %>><i class="material-icons right">create_new_folder</i>New Test</a-->
                     <!--form action=<%= `/test/new/?id=${story.id}` %> method="GET">
                         <button class="btn waves-effect waves-light" type="submit" id="NewStoryBtn">New Test
                             <i class="material-icons right">create_new_folder</i>
@@ -55,7 +55,7 @@
             <ul class="tabs">
                 <li class="tab col s3"><a href="#div_story_detail">Detail</a></li>
                 <li class="tab col s3"><a href="#div_task_list">Task List</a></li>
-                <li class="tab col s3"><a href="#div_test_list">Test List</a></li>
+                <!--li class="tab col s3"><a href="#div_test_list">Test List</a></li-->
             </ul>
         </div>
    
@@ -74,7 +74,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <select name="state" id="state" value=<%= story.state %>>
                                 <% for(option of state){ %>                                
                                     <option value=<%= option.id %> 
@@ -83,9 +83,7 @@
                             </select>
                             <label>State</label>                            
                         </div>
-                    </div>          
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <select name="stakeholder" id="stakeholder" value=<%= story.stakeholder %>>
                                 <% for(option of stakeholder){ %>                                
                                     <option value=<%= option.id %> 
@@ -94,15 +92,13 @@
                             </select>
                             <label>stakeholder</label>                            
                         </div>
-                    </div>  
-                    <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <input id="ap" name="ap" type="number" class="validate" value=<%= story.ap %>>
                             <label for="ap">ap</label>
                         </div>
-                    </div>
+                    </div>          
                     <div class="row">
-                        <div class="input-field col s12">
+                        <div class="input-field col s3">
                             <select name="user_id" id="user_id" value=<%= story.user_id %>>
                                 <% for(user of user_list){ %>                                
                                     <option value=<%= user.id %>
@@ -167,7 +163,7 @@
             </table>
         </div><!--End of Task Div-->
 
-        <div id="div_test_list" class="col s12">
+        <!--div id="div_test_list" class="col s12">
             <table class="striped">
                 <thead>
                     <tr>
@@ -185,7 +181,7 @@
                     <% } %>
                 </tbody>
             </table>
-        </div><!--End of User Div--> 
+        </div--><!--End of User Div--> 
 
     </div><!--End of Tab div--> 
     
