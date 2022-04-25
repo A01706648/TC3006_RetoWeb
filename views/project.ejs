@@ -30,6 +30,7 @@
                 <li class="tab col s3"><a href="#div_story_list">Story List</a></li>
                 <li class="tab col s3"><a href="#div_user_list">User List</a></li>
                 <li class="tab col s3"><a href="#div_wbs">WBS</a></li>
+                <li class="tab col s3"><a href="#div_phasehour">Phase Hour</a></li>
             </ul>
         </div>
    
@@ -173,6 +174,12 @@
                 <% } %>
             </table>
         </div><!--End of WBS-->
+        <div id="div_phasehour" class="col s12">
+            <% if(project.id != 0){ %>
+            <canvas id="phasehour" width="400" height="200"></canvas>
+            
+            <% } %>
+        </div><!--End of Phasehour-->
 
     </div><!--End of Tab div--> 
     
@@ -185,4 +192,41 @@
 
     <%- include('includes/tail.ejs') %>
     <script type="text/javascript" src="/js/project.js"></script> 
+    <% if(project.id != 0){ %>
+        <!--script>
+            var phasehour_element = document.getElementById("phasehour");
+            var phasehour_chart = new Chart(phasehour_element, {
+                type: 'bar',
+                data:{
+                    labels:[<% for(let phase of phase_list){ %> '<%= phase.name %>',<% } %>],
+                    dataset: [{
+                        label: 'Hour per Phase',
+                        data: [<% for(let hour of phase_hour){ %> <%= hour.real_hour %>, <% } %>],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script-->
+        <script type="text/javascript">
+            var phasehour_element = document.getElementById("phasehour").getContext("2d");
+            var phasehour = new Chart(phasehour_element, {
+                type: 'bar',
+                data:{
+                    labels:[ 'Analyze', 'Design', 'Implementation', 'Test'],
+                    dataset: [{
+                        label: 'Hour per Phase',
+                        data: [ 1,  2,  7,  3],
+                    }]
+                }
+            });
+            alert(1);
+        </script>
+    <% } %>        
     <%- include('includes/end.ejs') %>

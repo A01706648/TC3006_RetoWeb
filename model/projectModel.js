@@ -89,6 +89,18 @@ class ProjectClass
         });           
     }
 
+    static getPhaseHour(project_id)
+    {
+        return this.fetchPhaseHour(project_id)
+        .then(([rows, fieldData]) => {
+            let wbs = [...rows];
+            return wbs;
+        })
+        .catch(err => {
+            console.log(err);
+        }); 
+    }
+
     static getWbsByProject(project_id)
     {
         return this.fetchWbsByProject(project_id)
@@ -117,6 +129,18 @@ class ProjectClass
     static fetchOneById(id)
     {
         return db.execute('SELECT * FROM project WHERE id=?', [id]);
+    }
+
+    static fetchPhaseHour(project_id)
+    {
+        return db.execute("SELECT \
+        SUM(task.real_hour) AS 'real_hour'\
+        , phase.id AS 'phase_id' \
+        FROM (((story INNER JOIN project ON story.project_id=project.id) \
+        INNER JOIN task ON task.story_id=story.id) \
+        INNER JOIN task_type ON task.type=task_type.id) \
+        INNER JOIN phase ON task_type.phase_id=phase.id \
+        WHERE project_id=5 GROUP BY phase.id");
     }
 
     static fetchWbsByProject(project_id)
