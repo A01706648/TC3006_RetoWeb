@@ -12,6 +12,14 @@ const csrfProtection = csrf();
 
 /*import the router*/
 const homeRoute = require(path.join(__dirname, "routes", "homeRoute.js"));
+const projectRoute = require(path.join(__dirname, "routes", "projectRoute.js"));
+const storyRoute = require(path.join(__dirname, "routes", "storyRoute.js"));
+const loginRoute = require(path.join(__dirname, "routes", "loginRoute.js"));
+const userRoute = require(path.join(__dirname, "routes", "userRoute.js"));
+const taskRoute = require(path.join(__dirname, "routes", "taskRoute.js"));
+
+const optionModel = require(path.join(__dirname, "model", "optionModel.js"));
+
 
 //use EJS as view layer engine, use views folder to store html files
 app.set('view engine', 'ejs');
@@ -44,20 +52,37 @@ app.use(session({
 app.use(csrfProtection);
 
 //Get Option Inited
-//optionModel.init(); //no need for reto
+optionModel.init();
 //console.log(optionModel.work_state);
 app.get('/', (request, response, next) => {
-    console.log("Redirect to home");
-    response.redirect('/home');
+    if(request.session.isLoggedIn)
+    {
+        console.log("Redirect to home");
+        response.redirect('/home');
+    }
+    else
+    {
+        console.log("Redirect to Login");
+        response.redirect('/user/login');
+    }
 });
 
 //app.use('/', myRoute);
 app.use('/home', homeRoute);
+app.use('/project', projectRoute);
+app.use('/story', storyRoute);
+app.use('/user', userRoute);
+app.use('/task', taskRoute);
+/*
+app.use('/task', storyRoute);
+app.use('/test', testRoute);
+app.use('/user', userRoute);
+*/
 
 app.use( (request, response, next) => {
     //response.statusCode = 404;
     response.status(404);
-    response.send('Page Not Found - Hu'); 
+    response.send('Page Not Found'); 
 } );
 
 //app.listen(3000);

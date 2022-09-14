@@ -1,35 +1,35 @@
 <%- include('includes/head.ejs') %>   
    
-    <div id="div_control">
-        <form action="/project/new" method="GET">
-            <button class="btn waves-effect waves-light" type="submit" id="NewProjectBtn">New Project
-                <i class="material-icons right">create_new_folder</i>
-            </button>   
-        </form>
+    <div id="div_predict_param" class="col s12">
+        <div class="row">
+            <form class="col s12" id="form_predict_param" action="/home/" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>" >
+                <div class="row">
+                    <div class="input-field col s3">
+                        <input id="date" name="date" type="text" class="datepicker">
+                        <label for="date">Predict Date</label>
+                    </div>
+                </div>
+                <div id="promotion_control" class=" row">
+                    <div class="input-field col s3">
+                        <% for (let family of family_list) { %>
+                        <p class="range-field">
+                            <input type="range" class="filled-in" />
+                            <span><%= family %></span>
+                        </p>
+                        <% } %>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light" type="button" name="predictBtn" onclick="SaveBtnHandler();">Predict
+                    <i class="material-icons right">send</i>
+                </button>
+            </form>
+        </div>
     </div>
 
-    <div id="div_project_list">
-        <table class="striped">
-            <thead>
-                <tr>
-                    <th>Project ID</th>
-                    <th>Project Name</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <% for (let project of project_list) { %>
-                <tr>
-                    <td><a href=<%= `../project/?id=${project.id}` %> > <%= project.id %> </a></td>
-                    <td> <%= project.name %> </td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
 
 
 
     <%- include('includes/tail.ejs') %>
-    <script src="/js/home.js"></script> 
+    <script src="/js/predict.js"></script> 
     <%- include('includes/end.ejs') %>

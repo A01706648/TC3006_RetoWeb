@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3a5a63fb-2b7d-4f2d-b768-9976a4dcee3d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/app.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/homeControl.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/homeControl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/projectControl.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/projectControl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/storyControl.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/storyControl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/taskControl.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/taskControl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/userControl.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/userControl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/optionModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/optionModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/projectAssignModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/projectAssignModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/projectModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/projectModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/storyAssignModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/storyAssignModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/storyModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/storyModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/taskModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/taskModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/testModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/testModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/userModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/model/userModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/FakeHome.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/FakeHome.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/FakeProject.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/FakeProject.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/FakeStory.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/FakeStory.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/SampleChart.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/SampleChart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/materialize.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/materialize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/materialize.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/materialize.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/project.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/project.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/story.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/story.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/task.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/task.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/homeRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/homeRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/projectRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/projectRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/storyRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/storyRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/taskRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/taskRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/userRoute.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/userRoute.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/RelationalModeTable.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sql/RelationalModeTable.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/procedure.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/procedure.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/sql.txt" beforeDir="false" afterPath="$PROJECT_DIR$/sql/sql.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/sql_prepare.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/sql_prepare.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sql/test_procedure.sql" beforeDir="false" afterPath="$PROJECT_DIR$/sql/test_procedure.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/util/common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/database.js" beforeDir="false" afterPath="$PROJECT_DIR$/util/database.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/util/is_auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/util/is_auth.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/home.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/home.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/includes/end.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/includes/end.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/includes/head.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/includes/head.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/includes/navbar.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/includes/navbar.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/includes/tail.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/includes/tail.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/login.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/login.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/project.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/project.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/register.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/register.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/story.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/story.ejs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/task.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/views/task.ejs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2EiVc6Wxz1ziBOtAkkbizZv5cax" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3a5a63fb-2b7d-4f2d-b768-9976a4dcee3d" name="Changes" comment="" />
+      <created>1663078471498</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663078471498</updated>
+    </task>
+    <servers />
+  </component>
+</project>
