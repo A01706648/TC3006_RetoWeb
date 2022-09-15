@@ -96,22 +96,104 @@ for family in family_key:
 data_family = family_key
 
 
-data = list(zip(data_date, data_store_nbr, data_family, data_onpromotion))
-df_test = pd.DataFrame(data, columns = ['date', 'store_nbr', 'family', 'onpromotion'])
+def predict(date_str):
+    data = list(zip(data_date, data_store_nbr, data_family, data_onpromotion))
+    df_test = pd.DataFrame(data, columns = ['date', 'store_nbr', 'family', 'onpromotion'])
 
-#transfer the input data
-df_test["date"]
-df_test['date'] = pd.to_datetime(df_test['date'])
-df_test["date"] = df_test["date"].dt.to_period("D")
-df_test = df_test.set_index(["store_nbr", "family", "date"]).sort_index()
-X_test = dp_save.out_of_sample(steps=16)
-X_test.index.name = "date"
-X_test["NewYear"] = (X_test.index.dayofyear == 1)
+    #transfer the input data
+    df_test["date"]
+    df_test['date'] = pd.to_datetime(df_test['date'])
+    df_test["date"] = df_test["date"].dt.to_period("D")
+    df_test = df_test.set_index(["store_nbr", "family", "date"]).sort_index()
+    X_test = dp_save.out_of_sample(steps=16)
+    X_test.index.name = "date"
+    X_test["NewYear"] = (X_test.index.dayofyear == 1)
 
-#predict
-#y_predict = model_save.predict(X_test)
-#print(y_predict)
-y_submit_save = pd.DataFrame(model_save.predict(X_test), index=X_test.index, columns=y_columns_save)
-y_submit_save = y_submit_save.stack(["store_nbr", "family"])
-y_submit_save = y_submit_save.reindex(columns=["sales"])
-print(y_submit_save.head(len(family_key)))
+    #predict
+    #y_predict = model_save.predict(X_test)
+    #print(y_predict)
+    y_submit_save = pd.DataFrame(model_save.predict(X_test), index=X_test.index, columns=y_columns_save)
+    y_submit_save = y_submit_save.stack(["store_nbr", "family"])
+    y_submit_save = y_submit_save.reindex(columns=["sales"])
+    #print(y_submit_save.head(len(family_key)))
+
+    return y_submit_save['sales'].sum()
+
+def getSale(date_str):
+    pd_train = pd.read_csv('train.csv')
+    pd_train = pd_train[pd_train['date'] == date_str]
+    return pd_train['sale'].sum()
+
+
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import json
+import cgi
+
+def some_function():
+    print("some_function got called")
+
+class MyHandler(BaseHTTPRequestHandler):
+    def _set_headers(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'application/json')
+        self.end_headers()
+
+    def do_HEAD(self):
+        self._set_headers()
+
+    # GET sends back a Hello world message
+    def do_GET(self):
+        #if self.path == '/captureImage':
+            # Insert your code here
+        #    some_function()
+        print(self.path)
+        
+        date_str = (self.path.split('='))[1]
+        sale = predict(date_str)
+
+        self._set_headers()
+
+        result = 'Wrong'
+
+        sale_real = getSale(date_str)
+
+        if(abs(sale_real - sale) / sale_real < 0.1):
+            result = 'True'
+
+        self.wfile.write(json.dumps({'sale': sale, 'Result':, 'received': 'ok'}))
+
+    # POST echoes the message adding a JSON field
+    def do_POST(self):
+        ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+        
+        # refuse to receive non-json content
+        if ctype != 'application/json':
+            self.send_response(400)
+            self.end_headers()
+            return
+            
+        # read the message and convert it into a python dictionary
+        length = int(self.headers.getheader('content-length'))
+        message = json.loads(self.rfile.read(length))
+        
+        # add a property to the object, just to mess with data
+        message['received'] = 'ok'
+        
+        # send the message back
+        self._set_headers()
+        self.wfile.write(json.dumps(message))
+
+hostName = "localhost"
+serverPort = 443
+
+if __name__ == "__main__":        
+    webServer = HTTPServer((hostName, serverPort), MyHandler)
+    print("Server started http://%s:%s" % (hostName, serverPort))
+
+    try:
+        webServer.serve_forever()
+    except KeyboardInterrupt:
+        pass
+
+    webServer.server_close()
+    print("Server stopped.")
